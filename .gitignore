@@ -1,0 +1,6 @@
+/PladigPsicoBE/target/
+/ws/env/
+/ws/__pycache__/
+*.pdf
+/ws/*.json
+

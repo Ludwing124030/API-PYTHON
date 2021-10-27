@@ -1,0 +1,422 @@
+{
+	"info": {
+		"_postman_id": "a1f5f3d1-cfb4-4626-afcb-d8a8478fb859",
+		"name": "PladigPsico-NoLogin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "LoginEspecialista",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login con JWT\", function () {\r",
+							"    const parseJwt = (token) => {\r",
+							"        try {\r",
+							"            return JSON.parse(atob(token.split('.')[1]));\r",
+							"        } catch (e) {\r",
+							"            return null;\r",
+							"        }\r",
+							"    };\r",
+							"    \r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.JWT).to.be.a(\"string\");\r",
+							"    let claims = parseJwt(jsonData.JWT);\r",
+							"    console.log(claims)\r",
+							"    pm.expect(claims).to.have.all.keys(\"exp\", \"iat\", \"iss\", \"usuario\").and.be.an(\"object\");\r",
+							"    pm.expect(claims.exp).to.be.a(\"number\");\r",
+							"    pm.expect(claims.iat).to.be.a(\"number\");\r",
+							"    pm.expect(claims.iss).to.be.an(\"string\").and.eql('pladigpsico:web_service');\r",
+							"    pm.expect(claims.usuario).to.have.all.keys(\"usuarioID\", \"email\", \"especialista\").and.be.an(\"object\");\r",
+							"    pm.expect(claims.usuario.usuarioID).to.be.a(\"number\");\r",
+							"    pm.expect(claims.usuario.email).to.be.an(\"string\");\r",
+							"    pm.expect(claims.usuario.especialista).to.be.a(\"boolean\");\r",
+							"    \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usuario\": \"sobalvarro\",\r\n    \"password\": \"sobalvarro\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LoginSecretaria",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Login con JWT\", function () {\r",
+							"    const parseJwt = (token) => {\r",
+							"        try {\r",
+							"            return JSON.parse(atob(token.split('.')[1]));\r",
+							"        } catch (e) {\r",
+							"            return null;\r",
+							"        }\r",
+							"    };\r",
+							"    \r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.JWT).to.be.a(\"string\");\r",
+							"    let claims = parseJwt(jsonData.JWT);\r",
+							"    console.log(claims)\r",
+							"    pm.expect(claims).to.have.all.keys(\"exp\", \"iat\", \"iss\", \"usuario\").and.be.an(\"object\");\r",
+							"    pm.expect(claims.exp).to.be.a(\"number\");\r",
+							"    pm.expect(claims.iat).to.be.a(\"number\");\r",
+							"    pm.expect(claims.iss).to.be.an(\"string\").and.eql('pladigpsico:web_service');\r",
+							"    pm.expect(claims.usuario).to.have.all.keys(\"usuarioID\", \"email\", \"especialista\").and.be.an(\"object\");\r",
+							"    pm.expect(claims.usuario.usuarioID).to.be.a(\"number\");\r",
+							"    pm.expect(claims.usuario.email).to.be.an(\"string\");\r",
+							"    pm.expect(claims.usuario.especialista).to.be.a(\"boolean\");\r",
+							"    \r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"usuario\": \"secretaria\",\r\n    \"password\": \"secretaria\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/login",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListaHorarios",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"List de horarios validos\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.listaDeHorarios).to.be.an(\"array\");\r",
+							"    jsonData.listaDeHorarios.forEach(horario => {\r",
+							"        pm.expect(horario).to.have.all.keys(\"fecha\", \"horarioID\").and.to.be.an(\"object\");\r",
+							"        pm.expect(horario.fecha).to.be.a(\"string\");\r",
+							"        pm.expect(horario.horarioID).to.be.a(\"number\");\r",
+							"    });\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/paciente/horario",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"paciente",
+						"horario"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AgendarCita",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Valid Message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"cita agendada exitosamente!\");\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"paciente\": {\r\n        \"primer_nombre\": \"mario\",\r\n        \"segundo_nombre\": \"rene\",\r\n        \"primer_apellido\": \"estrada\",\r\n        \"segundo_apellido\": \"sobalvarro\",\r\n        \"email\": \"paciente0@pacientes.com\",\r\n        \"telefono\": 12344321\r\n    },\r\n    \"horario\": {\r\n        \"horarioID\": 429,\r\n        \"fecha\": \"01-09-2021 16:00:00\"\r\n    },\r\n    \"comentario\": \"soy tajante y tengan una mascarilla porque se me olvida llevar una\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/paciente/cita",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"paciente",
+						"cita"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ListaExamenes",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Paciente lista de examenes\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.listaDeExamenes).to.be.an('array');\r",
+							"    jsonData.listaDeExamenes.forEach(examen => {\r",
+							"        pm.expect(examen).to.have.all.keys('examenID', 'titulo').to.be.an('object');\r",
+							"        pm.expect(examen.examenID).to.be.a('number');\r",
+							"        pm.expect(examen.titulo).to.be.a('string');\r",
+							"    })\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://127.0.0.1:5000/paciente/examen",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"paciente",
+						"examen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SolicitarExamen",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Examen solicitado es valido\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.examen).to.have.all.keys('examenID', 'preguntas').and.to.be.an('object');\r",
+							"    //preguntas\r",
+							"    let preguntas = jsonData.examen.preguntas;\r",
+							"    preguntas.forEach(pregunta => {\r",
+							"        pm.expect(pregunta).to.have.all.keys('pregunta', 'preguntaID', 'respuestas').and.to.be.an('object');\r",
+							"            pm.expect(pregunta.pregunta).to.be.a(\"string\");\r",
+							"            pm.expect(pregunta.preguntaID).to.be.a(\"number\");\r",
+							"            //respuestas\r",
+							"            pm.expect(pregunta.respuestas).to.be.an(\"array\");\r",
+							"            pregunta.respuestas.forEach(respuesta => {\r",
+							"                pm.expect(respuesta).to.have.all.keys('respuesta', 'respuestaID', 'seleccion').and.to.be.an('object');\r",
+							"                pm.expect(respuesta.respuesta).to.be.a('string');\r",
+							"                pm.expect(respuesta.respuestaID).to.be.a('number');\r",
+							"                pm.expect(respuesta.seleccion).to.be.a('boolean');\r",
+							"            });\r",
+							"    })\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"examenID\": 6\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/paciente/solicitar/examen",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"paciente",
+						"solicitar",
+						"examen"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ExamenResuelto",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Response time is less than 5s\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(5000);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Valid Message\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.message).to.eql(\"examen recibido correctamente\");\r",
+							"});\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"examen\": {\r\n        \"examenID\": 6,\r\n        \"titulo\": \"LaPruebaDeAmor Juan 316\",\r\n        \"codigo\": 1222,\r\n        \"habilitado\": \"True\",\r\n        \"preguntas\": [\r\n            {\r\n                \"pregunta\": \"Luwing podra decirle Hola a Melissa?\",\r\n                \"preguntaID\": 1,\r\n                \"respuestas\": [\r\n                    {\r\n                        \"respuestaID\": 1,\r\n                        \"respuesta\": \"no\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 2,\r\n                        \"respuesta\": \"si\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 3,\r\n                        \"respuesta\": \"No porque tengo problemas de autoestima jeje\",\r\n                        \"respuestaDeUsuario\": true\r\n                    }\r\n                ]\r\n            },\r\n            {\r\n                \"pregunta\": \"Luwing podra conseguir empleo luego de cerrar pensum?\",\r\n                \"preguntaID\": 1,\r\n                \"respuestas\": [\r\n                    {\r\n                        \"respuestaID\": 1,\r\n                        \"respuesta\": \"no\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 2,\r\n                        \"respuesta\": \"si\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 3,\r\n                        \"respuesta\": \"No porque conseguir empleo hoy en dia depende del cuello y la casaca que tengas. Al menos que seas nivel Mario Estrada para programar olvidate de conseguir empleo :'(\",\r\n                        \"respuestaDeUsuario\": true\r\n                    }\r\n                ]\r\n            },\r\n            {\r\n                \"pregunta\": \"Luwing podra conseguir empleo luego de cerrar pensum?\",\r\n                \"preguntaID\": 1,\r\n                \"respuestas\": [\r\n                    {\r\n                        \"respuestaID\": 1,\r\n                        \"respuesta\": \"no\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 2,\r\n                        \"respuesta\": \"si\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 3,\r\n                        \"respuesta\": \"No porque conseguir empleo hoy en dia depende del cuello y la casaca que tengas. Al menos que seas nivel Mario Estrada para programar olvidate de conseguir empleo :'(\",\r\n                        \"respuestaDeUsuario\": true\r\n                    }\r\n                ]\r\n            },\r\n            {\r\n                \"pregunta\": \"Luwing podra conseguir empleo luego de cerrar pensum?\",\r\n                \"preguntaID\": 1,\r\n                \"respuestas\": [\r\n                    {\r\n                        \"respuestaID\": 1,\r\n                        \"respuesta\": \"no\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 2,\r\n                        \"respuesta\": \"si\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 3,\r\n                        \"respuesta\": \"No porque conseguir empleo hoy en dia depende del cuello y la casaca que tengas. Al menos que seas nivel Mario Estrada para programar olvidate de conseguir empleo :'(\",\r\n                        \"respuestaDeUsuario\": true\r\n                    }\r\n                ]\r\n            },\r\n            {\r\n                \"pregunta\": \"Luwing podra conseguir empleo luego de cerrar pensum?\",\r\n                \"preguntaID\": 1,\r\n                \"respuestas\": [\r\n                    {\r\n                        \"respuestaID\": 1,\r\n                        \"respuesta\": \"no\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 2,\r\n                        \"respuesta\": \"si\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 3,\r\n                        \"respuesta\": \"No porque conseguir empleo hoy en dia depende del cuello y la casaca que tengas. Al menos que seas nivel Mario Estrada para programar olvidate de conseguir empleo :'(\",\r\n                        \"respuestaDeUsuario\": true\r\n                    }\r\n                ]\r\n            },\r\n            {\r\n                \"pregunta\": \"Luwing podra conseguir empleo luego de cerrar pensum?\",\r\n                \"preguntaID\": 1,\r\n                \"respuestas\": [\r\n                    {\r\n                        \"respuestaID\": 1,\r\n                        \"respuesta\": \"no\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 2,\r\n                        \"respuesta\": \"si\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 3,\r\n                        \"respuesta\": \"No porque conseguir empleo hoy en dia depende del cuello y la casaca que tengas. Al menos que seas nivel Mario Estrada para programar olvidate de conseguir empleo :'(\",\r\n                        \"respuestaDeUsuario\": true\r\n                    }\r\n                ]\r\n            },\r\n            {\r\n                \"pregunta\": \"Luwing podra conseguir empleo luego de cerrar pensum?\",\r\n                \"preguntaID\": 1,\r\n                \"respuestas\": [\r\n                    {\r\n                        \"respuestaID\": 1,\r\n                        \"respuesta\": \"no\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 2,\r\n                        \"respuesta\": \"si\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 3,\r\n                        \"respuesta\": \"No porque conseguir empleo hoy en dia depende del cuello y la casaca que tengas. Al menos que seas nivel Mario Estrada para programar olvidate de conseguir empleo :'(\",\r\n                        \"respuestaDeUsuario\": true\r\n                    }\r\n                ]\r\n            },\r\n            {\r\n                \"pregunta\": \"Luwing podra conseguir empleo luego de cerrar pensum?\",\r\n                \"preguntaID\": 1,\r\n                \"respuestas\": [\r\n                    {\r\n                        \"respuestaID\": 1,\r\n                        \"respuesta\": \"no\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 2,\r\n                        \"respuesta\": \"si\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 3,\r\n                        \"respuesta\": \"No porque conseguir empleo hoy en dia depende del cuello y la casaca que tengas. Al menos que seas nivel Mario Estrada para programar olvidate de conseguir empleo :'(\",\r\n                        \"respuestaDeUsuario\": true\r\n                    }\r\n                ]\r\n            },\r\n            {\r\n                \"pregunta\": \"Luwing podra conseguir empleo luego de cerrar pensum?\",\r\n                \"preguntaID\": 1,\r\n                \"respuestas\": [\r\n                    {\r\n                        \"respuestaID\": 1,\r\n                        \"respuesta\": \"no\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 2,\r\n                        \"respuesta\": \"si\",\r\n                        \"respuestaDeUsuario\": false\r\n                    },\r\n                    {\r\n                        \"respuestaID\": 3,\r\n                        \"respuesta\": \"No porque conseguir empleo hoy en dia depende del cuello y la casaca que tengas. Al menos que seas nivel Mario Estrada para programar olvidate de conseguir empleo :'(\",\r\n                        \"respuestaDeUsuario\": true\r\n                    }\r\n                ]\r\n            }\r\n        ]\r\n    },\r\n    \"paciente\": {\r\n        \"primer_nombre\": \"Luwing\",\r\n        \"segundo_nombre\": \"Alias\",\r\n        \"primer_apellido\": \"Goku\",\r\n        \"segundo_apellido\": \"Black\",\r\n        \"email\": \"pacienteGOKU@pacientes.com\",\r\n        \"telefono\": 666777616\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://127.0.0.1:5000/paciente/examen",
+					"protocol": "http",
+					"host": [
+						"127",
+						"0",
+						"0",
+						"1"
+					],
+					"port": "5000",
+					"path": [
+						"paciente",
+						"examen"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					"pm.test(\"Status code is 200\", function () {",
+					"    pm.response.to.have.status(200);",
+					"});",
+					"pm.test(\"Response time is less than 100ms\", function () {",
+					"    pm.expect(pm.response.responseTime).to.be.below(100);",
+					"});",
+					"pm.test(\"Content-Type header is application/json\", () => {",
+					"  pm.expect(pm.response.headers.get('Content-Type')).to.eql('application/json');",
+					"});"
+				]
+			}
+		}
+	]
+}
